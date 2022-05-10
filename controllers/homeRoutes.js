@@ -5,45 +5,42 @@ const { User, Post, Comment } = require(`../models`);
 router.get(`/`, async (req, res) => {
     try {
         const postData = await Post.findAll({
-            attributes: [`id`, `text`, `date_created`, `user_id`],
-            include: [{
-                model: Comment,
-                attributes: [`id`, `text`, `date_created`, `post_id`],
-                include: {
-                    model: User,
-                    attributes: [`name`]
-                }
-            }]});
+            include: User
+        });
 
         const posts = postData.map((post) => post.get({ plain: true}));
 
         res.render(`post`, {
-            posts,
-            logged_in: req.session.logged_in
+            posts
         });
     } catch (error) {
         res.status(500).json(error);
     }
 });
 
-// router.get(`/post/:id`, async (req, res) => {
-//     try {
-//         const postData = await Post.findByPk(req.params.id, {
-//             include: [{
-//                 model: User,
-//                 attributes: [`name`]
-//             }]});
+router.get(`/post/:id`, async (req, res) => {
+    try {
+        const postData = await Post.findByPk(req.params.id, {
+            include: [{
+                model: User,
+                attributes: [`name`]
+            },{
+                model: Comment,
+                include: [{
+                    model: User,
+                    attributes: [`name`]
+                }]
+            }]});
 
-//         const post = postData.get({ plain: true });
+        const post = postData.get({ plain: true });
 
-//         res.render(`post`, {
-//             ...post,
-//             logged_in: req.session.logged_in
-//         });
-
-//     } catch (error) {
-//         res.status(500).json(error);
-//     }
-// });
+        res.render(`post`, {
+            ...post,
+            logged_in: req.session.logged_in
+        });
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
 
 module.exports = router;
