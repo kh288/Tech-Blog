@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <nav class="nav">
+    <nav class="nav bg-light border">
         <a class="nav-link active" aria-current="page" href="#">Home</a>
         <a class="nav-link" href="#">Dashboard</a>
         {{#if logged_in}}
@@ -20,6 +20,12 @@
         <a class="nav-link" href="#">Login</a>
         {{/if}}
     </nav>
+
+    <div class="jumbotron p-3">
+        <h1 class="display-4">Tech Blog</h1>
+        <p class="lead">Welcome to Kevin's tech blog site</p>
+        <hr class="my-4">
+    </div>
     <main class="container container-fluid">
     {{{body}}}
     </main>
