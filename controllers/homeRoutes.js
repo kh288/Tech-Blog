@@ -1,18 +1,22 @@
 const router = require(`express`).Router();
-const { User, Post, Comment } = require(`../models`);
+const { User, Post } = require(`../models`);
 // const withAuth = require(`../utils/auth`);
 
 router.get(`/`, async (req, res) => {
     try {
         const postData = await Post.findAll({
             include: [{
-                model: User,
-                attributes: [`name`]
+                model: Post,
+                attributes: [`id`, `text`, `date_created`, `user_id`],
+                include: {
+                    model: User,
+                    attributes: [`name`]
+                }
             }]});
 
         const posts = postData.map((post) => post.get({ plain: true}));
 
-        res.render(`home`, {
+        res.render(`post`, {
             posts,
             logged_in: req.session.logged_in
         });
@@ -21,24 +25,24 @@ router.get(`/`, async (req, res) => {
     }
 });
 
-router.get(`/post/:id`, async (req, res) => {
-    try {
-        const postData = await Post.findByPk(req.params.id, {
-            include: [{
-                model: User,
-                attributes: [`name`]
-            }]});
+// router.get(`/post/:id`, async (req, res) => {
+//     try {
+//         const postData = await Post.findByPk(req.params.id, {
+//             include: [{
+//                 model: User,
+//                 attributes: [`name`]
+//             }]});
 
-        const post = postData.get({ plain: true });
+//         const post = postData.get({ plain: true });
 
-        res.render(`post`, {
-            ...post,
-            logged_in: req.session.logged_in
-        });
+//         res.render(`post`, {
+//             ...post,
+//             logged_in: req.session.logged_in
+//         });
 
-    } catch (error) {
-        res.status(500).json(error);
-    }
-});
+//     } catch (error) {
+//         res.status(500).json(error);
+//     }
+// });
 
 module.exports = router;
