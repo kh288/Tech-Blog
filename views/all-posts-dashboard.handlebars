@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-auto">
+        {{#if loggedIn}}
+        <h2>Welcome, {{user.username}}!</h2>
+        {{/if}}
+    </div>
+</div>
+<br>
+{{#if posts.length}}
+<div class="card flex-column">
+    {{#each posts as |post|}}
+    {{>editItem post}}
+    {{/each}}
+</div>
+{{/if}}
