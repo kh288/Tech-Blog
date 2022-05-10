@@ -1,6 +1,6 @@
 const router = require(`express`).Router();
 const { User, Post, Comment } = require(`../models`);
-// const withAuth = require(`../utils/auth`);
+const withAuth = require(`../utils/auth`);
 
 router.get(`/`, async (req, res) => {
     try {
@@ -19,7 +19,7 @@ router.get(`/`, async (req, res) => {
     }
 });
 
-router.get(`/post/:id`, async (req, res) => {
+router.get(`/post/:id`, withAuth, async (req, res) => {
     try {
         const postData = await Post.findByPk(req.params.id, {
             include: [{
@@ -39,6 +39,30 @@ router.get(`/post/:id`, async (req, res) => {
             ...post,
             logged_in: req.session.logged_in
         });
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
+
+router.get(`/login`, (req, res) => {
+    try {
+        if(req.session.logged_in) {
+            res.redirect(`/dashboard`);
+        } else {
+            res.render(`login`);
+        }
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
+
+router.get(`/signup`, (req, res) => {
+    try {
+        if(req.session.logged_in) {
+            res.redirect(`/dashboard`);
+        } else {
+            res.render(`signup`);
+        }
     } catch (error) {
         res.status(500).json(error);
     }
