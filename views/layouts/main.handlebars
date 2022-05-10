@@ -11,13 +11,13 @@
 
 <body>
     <nav class="nav bg-light border">
-        <a class="nav-link active" aria-current="page" href="#">Home</a>
-        <a class="nav-link" href="#">Dashboard</a>
+        <a class="nav-link active" aria-current="page" href="/">Home</a>
+        <a class="nav-link" href="/dashboard">Dashboard</a>
         {{#if logged_in}}
-        <a class="nav-link" href="#">Profile</a>
-        <a class="nav-link" href="#">Logout</a>
+        <a class="nav-link" href="/profile">Profile</a>
+        <a class="nav-link" href="/logout">Logout</a>
         {{else}}
-        <a class="nav-link" href="#">Login</a>
+        <a class="nav-link" href="/login">Login</a>
         {{/if}}
     </nav>
 
